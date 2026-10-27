@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>기회발견 | 주변의 숨은 기회 찾기</title>
+  <style>
+    :root {
+      --primary: #3867f4;
+      --primary-dark: #244bd0;
+      --ink: #172033;
+      --muted: #68738a;
+      --line: #e5e9f2;
+      --surface: #ffffff;
+      --page: #f5f7fc;
+      --soft-blue: #edf2ff;
+      --green: #e8f8ef;
+      --shadow: 0 12px 35px rgba(31, 48, 88, .08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: Pretendard, "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .wrap { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    header {
+      background: rgba(255,255,255,.92);
+      border-bottom: 1px solid var(--line);
+      position: sticky; top: 0; z-index: 5;
+      backdrop-filter: blur(12px);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 70px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-size: 21px; font-weight: 900; letter-spacing: -.7px; }
+    .brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 13px; color: white; background: linear-gradient(135deg, #3867f4, #7a5cff); font-size: 21px; }
+    .nav-actions { display: flex; align-items: center; gap: 8px; }
+    .btn { border: 0; border-radius: 12px; padding: 11px 15px; font-weight: 750; transition: .15s ease; }
+    .btn-primary { color: white; background: var(--primary); }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .btn-light { background: #f0f3fa; color: var(--ink); }
+    .btn-light:hover { background: #e5eaf5; }
+    .hero { padding: 54px 0 28px; }
+    .hero-box {
+      position: relative; overflow: hidden; padding: clamp(26px, 5vw, 52px);
+      color: white; border-radius: 28px;
+      background: radial-gradient(circle at 85% 20%, rgba(255,255,255,.22), transparent 25%), linear-gradient(120deg, #2454df, #7057e8);
+      box-shadow: var(--shadow);
+    }
+    .eyebrow { display: inline-flex; gap: 7px; align-items: center; padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,.17); font-size: 13px; font-weight: 700; }
+    h1 { margin: 17px 0 12px; font-size: clamp(32px, 5vw, 50px); line-height: 1.18; letter-spacing: -1.8px; }
+    .hero p { max-width: 650px; margin: 0; color: rgba(255,255,255,.86); font-size: 16px; }
+    .searchbar { display: flex; gap: 9px; margin-top: 27px; max-width: 760px; }
+    .searchbar input { flex: 1; min-width: 0; border: 0; border-radius: 13px; padding: 15px 16px; outline: 2px solid transparent; }
+    .searchbar input:focus { outline-color: #b9c9ff; }
+    .searchbar button { background: #172033; color: white; padding: 13px 22px; }
+    .hero-note { margin-top: 12px; color: rgba(255,255,255,.78); font-size: 12px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 22px 0 32px; }
+    .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 17px; padding: 18px 20px; }
+    .stat strong { display: block; font-size: 24px; letter-spacing: -.5px; }
+    .stat span { color: var(--muted); font-size: 13px; }
+    .layout { display: grid; grid-template-columns: 235px minmax(0,1fr); gap: 22px; align-items: start; padding-bottom: 55px; }
+    aside, .content-panel { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; }
+    aside { padding: 20px; position: sticky; top: 90px; }
+    .filter-title { font-weight: 850; margin: 0 0 18px; font-size: 17px; }
+    .field { margin-bottom: 18px; }
+    .field label { display: block; margin-bottom: 7px; font-size: 13px; font-weight: 800; }
+    .field select, .field input, .field textarea {
+      width: 100%; padding: 11px 12px; border: 1px solid #dce2ee; border-radius: 11px; background: white; color: var(--ink); outline: none;
+    }
+    .field select:focus, .field input:focus, .field textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(56,103,244,.1); }
+    .check-row { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #424d64; }
+    .check-row input { width: 16px; height: 16px; accent-color: var(--primary); }
+    .content-panel { padding: 22px; min-width: 0; }
+    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+    .section-head h2 { margin: 0; font-size: 22px; letter-spacing: -.6px; }
+    .section-head p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+    .sort { border: 1px solid var(--line); background: white; padding: 9px 10px; border-radius: 10px; color: var(--ink); }
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 18px; }
+    .chip { border: 1px solid var(--line); background: white; color: #526078; padding: 8px 12px; border-radius: 999px; font-size: 13px; font-weight: 750; }
+    .chip.active { color: var(--primary); background: var(--soft-blue); border-color: #cdd9ff; }
+    .cards { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
+    .card { display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--line); border-radius: 17px; overflow: hidden; background: white; transition: .18s ease; }
+    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: #d2dcf7; }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; padding: 16px 16px 0; }
+    .icon-box { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 14px; font-size: 24px; flex-shrink: 0; }
+    .icon-blue { background: #edf2ff; } .icon-green { background: #e8f8ef; } .icon-yellow { background: #fff5d9; } .icon-pink { background: #ffedf1; } .icon-purple { background: #f1eaff; }
+    .save-btn { border: 1px solid var(--line); border-radius: 10px; background: white; color: #64708a; padding: 7px 9px; }
+    .save-btn.saved { color: #e34d75; background: #fff0f4; border-color: #ffd4e0; }
+    .card-body { padding: 12px 16px 16px; display: flex; flex-direction: column; flex: 1; }
+    .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 9px; }
+    .tag { display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 7px; background: #f2f4f9; color: #5a657c; font-size: 11px; font-weight: 800; }
+    .tag.verified { color: #137648; background: #e8f8ef; }
+    .card h3 { margin: 0 0 7px; font-size: 17px; line-height: 1.35; letter-spacing: -.35px; }
+    .desc { color: #69748a; font-size: 13px; margin: 0 0 14px; line-height: 1.6; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px 12px; color: #778198; font-size: 12px; margin-top: auto; }
+    .card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid #f0f2f7; padding-top: 13px; margin-top: 14px; }
+    .score { font-size: 12px; color: var(--primary); font-weight: 850; }
+    .detail-btn { border: 0; background: var(--soft-blue); color: var(--primary); font-weight: 800; border-radius: 9px; padding: 8px 11px; font-size: 12px; }
+    .empty { text-align: center; padding: 48px 16px; color: var(--muted); grid-column: 1 / -1; }
+    .empty .emoji { font-size: 38px; }
+    .empty h3 { color: var(--ink); margin: 9px 0 4px; }
+    .footer { color: #7b8599; text-align: center; padding: 0 0 30px; font-size: 12px; }
+    .notice { background: #fff8e7; color: #795b12; border: 1px solid #f5e4b4; padding: 12px 14px; border-radius: 12px; font-size: 12px; margin-bottom: 18px; }
+    dialog { width: min(540px, calc(100% - 28px)); border: 0; padding: 0; border-radius: 20px; box-shadow: 0 25px 80px rgba(10,20,45,.3); }
+    dialog::backdrop { background: rgba(16,24,44,.55); backdrop-filter: blur(3px); }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; padding: 20px 22px; border-bottom: 1px solid var(--line); }
+    .modal-head h2 { margin: 0; font-size: 20px; }
+    .x-btn { border: 0; border-radius: 9px; padding: 7px 10px; background: #f0f2f8; }
+    .modal-body { padding: 22px; max-height: 70vh; overflow: auto; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 6px; }
+    .modal-body .field textarea { resize: vertical; min-height: 90px; }
+    .detail-description { color: #59657d; line-height: 1.75; }
+    .source { margin-top: 14px; font-size: 12px; color: #68738a; overflow-wrap: anywhere; }
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #172033; color: white; border-radius: 12px; padding: 12px 17px; box-shadow: var(--shadow); z-index: 20; display: none; max-width: calc(100% - 28px); font-size: 14px; }
+
+    .live-panel { margin: 0 0 22px; background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+    .live-panel h2 { margin: 0 0 5px; font-size: 20px; }
+    .live-panel .sub { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+    .live-controls { display: grid; grid-template-columns: minmax(0,1fr) auto auto; gap: 9px; }
+    .live-controls input { min-width: 0; width: 100%; border: 1px solid #dce2ee; border-radius: 11px; padding: 11px 12px; }
+    .live-status { margin-top: 10px; font-size: 12px; color: #68738a; }
+    .live-status.error { color: #b42318; }
+    .source-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .source-links a { text-decoration: none; color: var(--primary); background: var(--soft-blue); padding: 8px 11px; border-radius: 9px; font-size: 12px; font-weight: 800; }
+    .live-label { background: #e8f8ef; color: #137648; }
+    .api-help { margin-top: 10px; color: #68738a; font-size: 12px; line-height: 1.6; }
+    .api-help a { color: var(--primary); }
+    @media (max-width: 560px) { .live-controls { grid-template-columns: 1fr; } .live-controls .btn { width: 100%; } }
+
+    @media (max-width: 820px) {
+      .layout { grid-template-columns: 1fr; }
+      aside { position: static; }
+      .filters-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0 12px; }
+      .cards { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 22px, 1120px); }
+      .nav { min-height: 62px; }
+      .brand { font-size: 18px; }
+      .nav-actions .btn { padding: 9px 10px; font-size: 12px; }
+      .hero { padding-top: 24px; }
+      .hero-box { border-radius: 21px; }
+      .searchbar { flex-direction: column; }
+      .searchbar button { width: 100%; }
+      .stats { gap: 8px; margin-top: 14px; }
+      .stat { padding: 13px 11px; }
+      .stat strong { font-size: 20px; }
+      .stat span { font-size: 11px; }
+      .content-panel { padding: 15px; }
+      .section-head { align-items: flex-start; flex-direction: column; }
+      .cards { grid-template-columns: 1fr; }
+      .filters-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <div class="brand"><span class="brand-mark">✦</span> 기회발견</div>
+      <div class="nav-actions">
+        <button class="btn btn-light" id="savedViewBtn">♡ 관심 목록 <span id="savedCount">0</span></button>
+        <button class="btn btn-primary" id="openAddBtn">＋ 기회 등록</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-box">
+        <span class="eyebrow">✦ 전국의 숨은 기회를 한곳에서</span>
+        <h1>남들이 지나치는 곳에서<br>나만의 기회를 발견하다.</h1>
+        <p>할인 혜택부터 무료 행사, 체험, 공모전, 봉사활동, 창업 정보까지. 내게 맞는 기회를 찾아보세요.</p>
+        <form class="searchbar" id="searchForm">
+          <input id="searchInput" type="search" placeholder="예: 무료 체험, 인천, 창업 지원" aria-label="기회 검색">
+          <button class="btn" type="submit">기회 검색 →</button>
+        </form>
+        <div class="hero-note">공공데이터 API를 연결하면 실제 공연·전시 정보를 조회할 수 있습니다. 다른 분야는 아래 공식 사이트에서 확인하세요.</div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="기회 통계">
+      <div class="stat"><strong id="totalCount">0</strong><span>등록된 기회</span></div>
+      <div class="stat"><strong id="freeCount">0</strong><span>무료 기회</span></div>
+      <div class="stat"><strong id="categoryCount">6</strong><span>기회 분야</span></div>
+    </section>
+
+
+    <section class="live-panel">
+      <h2>🌐 실제 공공데이터 연결</h2>
+      <p class="sub">문화포털의 공연·전시 정보를 직접 조회할 수 있어요. 인증키가 있어야 실시간 조회가 가능합니다.</p>
+      <div class="live-controls">
+        <input id="cultureApiKey" type="password" autocomplete="off" placeholder="문화포털 API 일반 인증키(Decoding)">
+        <button class="btn btn-primary" id="loadCultureBtn">공연·전시 불러오기</button>
+        <button class="btn btn-light" id="clearLiveBtn">실시간 결과 지우기</button>
+      </div>
+      <div id="liveStatus" class="live-status" role="status" aria-live="polite">아직 실시간 데이터를 불러오지 않았습니다. 인증키는 이 페이지에서만 사용하며 저장하지 않습니다.</div>
+      <div class="api-help">
+        인증키 발급: <a href="https://www.data.go.kr/" target="_blank" rel="noopener noreferrer">공공데이터포털</a>에서 문화포털 공연·전시 API를 검색해 활용 신청하세요.
+        파일을 더블 클릭해 연 페이지에서는 브라우저의 보안 정책(CORS)으로 API 요청이 차단될 수 있습니다. 이 경우 로컬 서버/백엔드를 통해 연결해야 합니다.
+      </div>
+      <div class="source-links" aria-label="공식 정보 사이트">
+        <a href="https://www.k-startup.go.kr/" target="_blank" rel="noopener noreferrer">🚀 K-Startup 창업지원</a>
+        <a href="https://www.bizinfo.go.kr/" target="_blank" rel="noopener noreferrer">🏢 기업마당 지원사업</a>
+        <a href="https://www.culture.go.kr/" target="_blank" rel="noopener noreferrer">🎭 문화포털</a>
+        <a href="https://www.1365.go.kr/" target="_blank" rel="noopener noreferrer">🌱 1365 자원봉사</a>
+        <a href="https://www.work24.go.kr/" target="_blank" rel="noopener noreferrer">💼 고용24 일자리</a>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside>
+        <h2 class="filter-title">기회 찾기</h2>
+        <div class="filters-grid">
+          <div class="field">
+            <label for="regionFilter">지역</label>
+            <select id="regionFilter">
+              <option value="전체">전국 전체</option>
+              <option>서울</option><option>인천</option><option>경기</option><option>강원</option>
+              <option>대전</option><option>세종</option><option>충북</option><option>충남</option>
+              <option>광주</option><option>전북</option><option>전남</option><option>대구</option>
+              <option>경북</option><option>부산</option><option>울산</option><option>경남</option><option>제주</option>
+              <option>온라인</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="typeFilter">기회 종류</label>
+            <select id="typeFilter">
+              <option value="전체">모든 분야</option>
+              <option value="할인">할인·혜택</option>
+              <option value="행사">행사·체험</option>
+              <option value="공모전">공모전·교육</option>
+              <option value="봉사">봉사·나눔</option>
+              <option value="창업">창업·사업</option>
+              <option value="일자리">일자리·활동</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="budgetFilter">비용</label>
+            <select id="budgetFilter">
+              <option value="전체">비용 전체</option>
+              <option value="무료">무료만</option>
+              <option value="유료">유료 포함</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="sortFilter">정렬</label>
+            <select id="sortFilter">
+              <option value="추천순">추천순</option>
+              <option value="마감순">마감일 가까운 순</option>
+              <option value="최신순">최근 등록순</option>
+            </select>
+          </div>
+        </div>
+        <label class="check-row"><input id="savedOnly" type="checkbox"> 관심 목록만 보기</label>
+        <button class="btn btn-light" id="resetBtn" style="width:100%; margin-top:16px">필터 초기화</button>
+      </aside>
+
+      <section class="content-panel">
+        <div class="section-head">
+          <div>
+            <h2 id="resultsTitle">오늘 발견할 기회</h2>
+            <p id="resultsSubtitle">관심 분야와 조건에 맞는 기회를 살펴보세요.</p>
+          </div>
+          <span class="tag" id="resultCount">0개</span>
+        </div>
+        <div class="notice">안내: 아래 목록은 2026년 10월 27일 기준 접수 마감일이 지나지 않은 공식 공고를 선별한 것입니다. 모집 여부와 조건은 변경될 수 있으니 신청 전 원문을 확인하세요.</div>
+        <div class="chips" id="quickChips">
+          <button class="chip active" data-type="전체">전체</button>
+          <button class="chip" data-type="할인">💸 할인·혜택</button>
+          <button class="chip" data-type="행사">🎪 행사·체험</button>
+          <button class="chip" data-type="공모전">🏆 공모전·교육</button>
+          <button class="chip" data-type="봉사">🌱 봉사·나눔</button>
+          <button class="chip" data-type="창업">🚀 창업·사업</button>
+          <button class="chip" data-type="일자리">💼 일자리·활동</button>
+        </div>
+        <div class="cards" id="cards"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="wrap footer">
+    기회발견은 기회를 쉽게 탐색하도록 돕는 서비스입니다. 수록 공고는 2026년 10월 27일 기준으로 확인했으며, 최종 일정·자격은 제공 기관의 원문을 확인하세요.
+  </footer>
+
+  <dialog id="addDialog">
+    <div class="modal-head"><h2>새로운 기회 등록</h2><button class="x-btn" data-close="addDialog" aria-label="닫기">✕</button></div>
+    <form id="addForm" class="modal-body">
+      <div class="field"><label for="newTitle">기회 이름 *</label><input id="newTitle" required maxlength="90" placeholder="예: 지역 무료 창업 특강"></div>
+      <div class="field"><label for="newType">분야 *</label><select id="newType" required><option value="할인">할인·혜택</option><option value="행사">행사·체험</option><option value="공모전">공모전·교육</option><option value="봉사">봉사·나눔</option><option value="창업">창업·사업</option><option value="일자리">일자리·활동</option></select></div>
+      <div class="field"><label for="newRegion">지역 *</label><select id="newRegion" required><option>온라인</option><option>서울</option><option>인천</option><option>경기</option><option>강원</option><option>대전</option><option>세종</option><option>충북</option><option>충남</option><option>광주</option><option>전북</option><option>전남</option><option>대구</option><option>경북</option><option>부산</option><option>울산</option><option>경남</option><option>제주</option></select></div>
+      <div class="field"><label for="newCost">비용</label><select id="newCost"><option value="무료">무료</option><option value="유료">유료</option></select></div>
+      <div class="field"><label for="newDeadline">마감일 (선택)</label><input id="newDeadline" type="date"></div>
+      <div class="field"><label for="newDesc">설명 *</label><textarea id="newDesc" required maxlength="500" placeholder="어떤 기회인지, 누가 참여할 수 있는지 적어 주세요."></textarea></div>
+      <div class="field"><label for="newSource">공식 출처 링크 (선택)</label><input id="newSource" type="url" placeholder="https://..."></div>
+      <div class="notice">현재 등록 내용은 이 브라우저에만 저장됩니다. 공용 웹사이트로 운영하려면 서버와 신고·검수 기능을 추가해야 합니다.</div>
+      <div class="modal-actions"><button type="button" class="btn btn-light" data-close="addDialog">취소</button><button class="btn btn-primary" type="submit">기회 등록</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="detailDialog">
+    <div class="modal-head"><h2 id="detailTitle">기회 상세</h2><button class="x-btn" data-close="detailDialog" aria-label="닫기">✕</button></div>
+    <div class="modal-body" id="detailBody"></div>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const STORAGE_KEY = "opportunityFinder.items.v1";
+    const SAVED_KEY = "opportunityFinder.saved.v1";
+
+    // 아래는 기능 테스트를 위한 가상 예시입니다. 실제 공고나 혜택이 아닙니다.
+    // 2026-10-27 기준 공식 모집 페이지에서 접수 마감일이 지나지 않은 공고를 확인해 넣었습니다.
+    // 공고 일정은 변경될 수 있으므로 신청 전에 반드시 원문을 확인하세요.
+    const sampleOpportunities = [
+      {
+        id: "official-1",
+        title: "AI 활용 제조창업 올인원 실전 교육",
+        type: "공모전",
+        region: "충북",
+        cost: "확인 필요",
+        deadline: "2026-11-06",
+        description: "AI를 제조창업 과정에 활용하는 실무 교육입니다. 학생과 일반인도 신청 대상에 포함됩니다. 접수 마감은 2026년 11월 6일 13:00이며, 세부 일정과 참가 조건은 공식 공고에서 확인하세요.",
+        source: "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?pbancSn=179593&schM=view",
+        dateAdded: "2026-10-21",
+        icon: "🤖",
+        color: "icon-blue",
+        tags: ["AI", "교육", "학생·일반인"],
+        score: 98,
+        verified: true,
+        eligibility: "AI 활용 교육을 희망하는 학생 및 일반인, (예비)창업자"
+      },
+      {
+        id: "official-2",
+        title: "서울창업허브 창동 데모데이 참관 신청",
+        type: "행사",
+        region: "서울",
+        cost: "확인 필요",
+        deadline: "2026-11-18",
+        description: "스타트업 10개사의 사업모델 발표와 투자유치 특강, 네트워킹을 참관하는 행사입니다. 행사는 2026년 11월 19일 서울창업허브 창동에서 열릴 예정입니다. 접수 마감은 11월 18일 17:00입니다.",
+        source: "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?pbancSn=179562&schM=view",
+        dateAdded: "2026-10-19",
+        icon: "🚀",
+        color: "icon-purple",
+        tags: ["창업", "네트워킹", "참관"],
+        score: 96,
+        verified: true,
+        eligibility: "(예비)창업자, 투자자, 창업 유관 기관 및 창업에 관심 있는 사람"
+      },
+      {
+        id: "official-3",
+        title: "시제품 고도화 바우처 지원 프로그램",
+        type: "창업",
+        region: "충북",
+        cost: "확인 필요",
+        deadline: "2026-11-03",
+        description: "시제품 제작과 전문 제조업체 매칭 등을 지원하는 사업입니다. 청주시에 본점·지점·연구소 중 하나를 둔 업력 7년 미만 창업기업이 대상입니다. 접수 마감은 2026년 11월 3일 14:00입니다.",
+        source: "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?pbancSn=179601&schM=view",
+        dateAdded: "2026-10-22",
+        icon: "🧰",
+        color: "icon-yellow",
+        tags: ["시제품", "창업기업", "제작 지원"],
+        score: 93,
+        verified: true,
+        eligibility: "청주시에 본점·지점·연구소 중 하나를 둔 업력 7년 미만 창업기업"
+      },
+      {
+        id: "official-4",
+        title: "AI를 활용한 창업팀의 일하는 방식",
+        type: "창업",
+        region: "서울",
+        cost: "무료",
+        deadline: "2026-11-02",
+        description: "AI를 창업 업무에 적용하는 온라인 교육 프로그램입니다. Zoom으로 진행되며, 신청 마감은 2026년 11월 2일 23:59입니다. 대상 연령과 창업 조건을 공식 공고에서 확인하세요.",
+        source: "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?pbancSn=179544&schM=view",
+        dateAdded: "2026-10-16",
+        icon: "💡",
+        color: "icon-green",
+        tags: ["AI", "온라인", "창업 교육"],
+        score: 90,
+        verified: true,
+        eligibility: "청년 예비·초기 창업자(공고상 1987년 이후 출생자)"
+      },
+      {
+        id: "official-5",
+        title: "AI 활용 소상공인·전통시장 매니저 실무 교육",
+        type: "공모전",
+        region: "경남",
+        cost: "무료",
+        deadline: "2026-11-13",
+        description: "AI를 이용한 홍보문구, 상품 이미지, 포스터 제작과 마케팅 실무를 다루는 무료 교육입니다. 2026년 11월 13일 18:00까지 신청할 수 있으며, 경남 지역의 (예비)소상공인과 전통시장 매니저가 대상입니다.",
+        source: "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?pbancSn=179552&schM=view",
+        dateAdded: "2026-10-21",
+        icon: "📣",
+        color: "icon-pink",
+        tags: ["AI", "마케팅", "무료 교육"],
+        score: 88,
+        verified: true,
+        eligibility: "경상남도 소재 (예비)소상공인 및 전통시장 매니저"
+      },
+      {
+        id: "official-6",
+        title: "의왕시 청년 e-Room 창업아이디어 공모전",
+        type: "공모전",
+        region: "경기",
+        cost: "무료",
+        deadline: "2026-11-11",
+        description: "의왕시의 지속가능발전을 위한 창업 아이디어 공모전입니다. 대상은 19~39세 청년이며, 대상·최우수상·우수상에 상금이 있습니다. 접수 마감은 2026년 11월 11일 18:00입니다.",
+        source: "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?pbancSn=179565&schM=view",
+        dateAdded: "2026-10-19",
+        icon: "🏆",
+        color: "icon-yellow",
+        tags: ["창업 아이디어", "청년", "공모전"],
+        score: 85,
+        verified: true,
+        eligibility: "대한민국 19~39세 청년"
+      }
+    ];
+
+    const $ = (selector) => document.querySelector(selector);
+    const cardsEl = $("#cards");
+    let savedIds = new Set(readJSON(SAVED_KEY, []));
+    let userItems = readJSON(STORAGE_KEY, []);
+    let activeChip = "전체";
+    let savedMode = false;
+    let liveItems = [];
+    let toastTimer;
+
+    function readJSON(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch {
+        return fallback;
+      }
+    }
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userItems));
+      localStorage.setItem(SAVED_KEY, JSON.stringify([...savedIds]));
+    }
+    function allItems() {
+      return [...liveItems, ...userItems, ...sampleOpportunities];
+    }
+    function escapeHTML(value = "") {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[char]);
+    }
+    function safeURL(value) {
+      try {
+        const url = new URL(value);
+        return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+      } catch { return ""; }
+    }
+    function showToast(message) {
+      const toast = $("#toast");
+      toast.textContent = message;
+      toast.style.display = "block";
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.style.display = "none", 2600);
+    }
+    function updateStats() {
+      const items = allItems();
+      $("#totalCount").textContent = items.length;
+      $("#freeCount").textContent = items.filter(item => item.cost === "무료").length;
+      $("#savedCount").textContent = savedIds.size;
+    }
+    function getFilteredItems() {
+      const query = $("#searchInput").value.trim().toLocaleLowerCase("ko-KR");
+      const region = $("#regionFilter").value;
+      const type = activeChip !== "전체" ? activeChip : $("#typeFilter").value;
+      const budget = $("#budgetFilter").value;
+      const sort = $("#sortFilter").value;
+      let items = allItems().filter(item => {
+        const searchable = [item.title, item.description, item.region, item.type, ...(item.tags || [])].join(" ").toLocaleLowerCase("ko-KR");
+        const matchesQuery = !query || searchable.includes(query);
+        const matchesRegion = region === "전체" || item.region === region;
+        const matchesType = type === "전체" || item.type === type;
+        const matchesBudget = budget === "전체" || (budget === "무료" ? item.cost === "무료" : true);
+        const matchesSaved = !($("#savedOnly").checked || savedMode) || savedIds.has(item.id);
+        return matchesQuery && matchesRegion && matchesType && matchesBudget && matchesSaved;
+      });
+      if (sort === "추천순") items.sort((a, b) => (b.score || 50) - (a.score || 50));
+      if (sort === "마감순") items.sort((a, b) => {
+        const da = a.deadline || "9999-12-31";
+        const db = b.deadline || "9999-12-31";
+        return da.localeCompare(db);
+      });
+      if (sort === "최신순") items.sort((a, b) => (b.dateAdded || "").localeCompare(a.dateAdded || ""));
+      return items;
+    }
+    function formatDate(date) {
+      if (!date) return "마감일 미정";
+      const d = new Date(date + "T00:00:00");
+      if (Number.isNaN(d.getTime())) return "마감일 미정";
+      return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")} 마감`;
+    }
+    function render() {
+      const items = getFilteredItems();
+      updateStats();
+      $("#resultCount").textContent = `${items.length}개`;
+      $("#resultsTitle").textContent = savedMode || $("#savedOnly").checked ? "내 관심 기회" : "오늘 발견할 기회";
+      $("#resultsSubtitle").textContent = items.length ? "카드를 눌러 자세한 내용을 확인하세요." : "검색 조건을 바꾸거나 새로운 기회를 등록해 보세요.";
+      cardsEl.innerHTML = "";
+      if (!items.length) {
+        cardsEl.innerHTML = `<div class="empty"><div class="emoji">🔎</div><h3>조건에 맞는 기회가 없어요</h3><p>지역이나 검색어를 바꿔 다시 찾아보세요.</p><button class="btn btn-light" onclick="resetFilters()">필터 초기화</button></div>`;
+        return;
+      }
+      items.forEach(item => {
+        const saved = savedIds.has(item.id);
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="card-top">
+            <div class="icon-box ${escapeHTML(item.color || "icon-blue")}">${escapeHTML(item.icon || "✨")}</div>
+            <button class="save-btn ${saved ? "saved" : ""}" data-save="${escapeHTML(item.id)}" aria-label="${saved ? "관심 목록에서 제거" : "관심 목록에 저장"}">${saved ? "♥ 저장됨" : "♡ 저장"}</button>
+          </div>
+          <div class="card-body">
+            <div class="badges">
+              <span class="tag">${escapeHTML(item.type)}</span>
+              <span class="tag">${escapeHTML(item.region)}</span>
+              <span class="tag ${item.cost === "무료" ? "verified" : ""}">${escapeHTML(item.cost)}</span>
+              ${item.verified ? '<span class="tag live-label">공식 공고</span>' : (item.demo ? '<span class="tag">예시 데이터</span>' : '<span class="tag">사용자 등록</span>')}
+            </div>
+            <h3>${escapeHTML(item.title)}</h3>
+            <p class="desc">${escapeHTML(item.description)}</p>
+            <div class="meta"><span>📅 ${escapeHTML(formatDate(item.deadline))}</span><span>🏷️ ${(item.tags || []).map(escapeHTML).join(" · ")}</span></div>
+            <div class="card-bottom"><span class="score">✦ 추천 점수 ${Number(item.score || 50)}점</span><button class="detail-btn" data-detail="${escapeHTML(item.id)}">자세히 보기 →</button></div>
+          </div>`;
+        cardsEl.appendChild(card);
+      });
+    }
+    function resetFilters() {
+      $("#searchInput").value = "";
+      $("#regionFilter").value = "전체";
+      $("#typeFilter").value = "전체";
+      $("#budgetFilter").value = "전체";
+      $("#sortFilter").value = "추천순";
+      $("#savedOnly").checked = false;
+      savedMode = false;
+      activeChip = "전체";
+      document.querySelectorAll(".chip").forEach(chip => chip.classList.toggle("active", chip.dataset.type === "전체"));
+      render();
+    }
+    window.resetFilters = resetFilters;
+
+    function openDetail(id) {
+      const item = allItems().find(entry => entry.id === id);
+      if (!item) return;
+      $("#detailTitle").textContent = item.title;
+      const source = safeURL(item.source);
+      $("#detailBody").innerHTML = `
+        <div class="badges">
+          <span class="tag">${escapeHTML(item.type)}</span>
+          <span class="tag">${escapeHTML(item.region)}</span>
+          <span class="tag">${escapeHTML(item.cost)}</span>
+          ${item.verified ? '<span class="tag live-label">공식 공고</span>' : (item.demo ? '<span class="tag">예시 데이터</span>' : "")}
+        </div>
+        <p class="detail-description">${escapeHTML(item.description)}</p>
+        <p><strong>마감일:</strong> ${escapeHTML(formatDate(item.deadline))}</p>
+        <p><strong>등록일:</strong> ${escapeHTML(item.dateAdded || "미입력")}</p>
+        ${item.verified ? `<div class="notice"><strong>신청 대상:</strong> ${escapeHTML(item.eligibility || "공식 공고에서 확인")}<br>이 정보는 2026년 10월 27일에 확인했습니다. 접수 일정이나 자격은 변경될 수 있으니 원문을 확인하세요.</div>` : (item.demo ? '<div class="notice">이 카드는 기능 확인용 가상 예시입니다. 실제 행사나 혜택으로 사용할 수 없습니다.</div>' : "")}
+        ${source ? `<p class="source">출처: <a href="${escapeHTML(source)}" target="_blank" rel="noopener noreferrer">공식 공고 원문 및 신청 방법 보기 ↗</a></p>` : '<p class="source">공식 출처 링크가 등록되지 않았습니다. 이용 전 정보를 별도로 확인하세요.</p>'}
+        <div class="modal-actions">
+          <button class="btn btn-light" id="detailSaveBtn">${savedIds.has(item.id) ? "♥ 관심 해제" : "♡ 관심 저장"}</button>
+          <button class="btn btn-primary" data-close="detailDialog">닫기</button>
+        </div>`;
+      $("#detailSaveBtn").addEventListener("click", () => toggleSaved(id));
+      $("#detailDialog").showModal();
+    }
+    function toggleSaved(id) {
+      if (savedIds.has(id)) {
+        savedIds.delete(id);
+        showToast("관심 목록에서 제거했어요.");
+      } else {
+        savedIds.add(id);
+        showToast("관심 목록에 저장했어요.");
+      }
+      saveState();
+      render();
+      if ($("#detailDialog").open) openDetail(id);
+    }
+
+    $("#searchForm").addEventListener("submit", event => { event.preventDefault(); savedMode = false; render(); });
+    ["regionFilter", "typeFilter", "budgetFilter", "sortFilter", "savedOnly"].forEach(id => {
+      $("#" + id).addEventListener("change", () => { savedMode = false; if (id === "typeFilter") { activeChip = "전체"; document.querySelectorAll(".chip").forEach(chip => chip.classList.toggle("active", chip.dataset.type === "전체")); } render(); });
+    });
+    $("#quickChips").addEventListener("click", event => {
+      const chip = event.target.closest("[data-type]");
+      if (!chip) return;
+      activeChip = chip.dataset.type;
+      $("#typeFilter").value = "전체";
+      document.querySelectorAll(".chip").forEach(item => item.classList.toggle("active", item === chip));
+      render();
+    });
+    cardsEl.addEventListener("click", event => {
+      const saveButton = event.target.closest("[data-save]");
+      const detailButton = event.target.closest("[data-detail]");
+      if (saveButton) toggleSaved(saveButton.dataset.save);
+      if (detailButton) openDetail(detailButton.dataset.detail);
+    });
+    $("#savedViewBtn").addEventListener("click", () => {
+      savedMode = !savedMode;
+      $("#savedOnly").checked = savedMode;
+      render();
+      if (savedMode) document.querySelector(".content-panel").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    $("#resetBtn").addEventListener("click", resetFilters);
+    $("#openAddBtn").addEventListener("click", () => $("#addDialog").showModal());
+
+    document.addEventListener("click", event => {
+      const closeButton = event.target.closest("[data-close]");
+      if (closeButton) {
+        const dialog = document.getElementById(closeButton.dataset.close);
+        if (dialog) dialog.close();
+      }
+    });
+
+    $("#addForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const title = $("#newTitle").value.trim();
+      const description = $("#newDesc").value.trim();
+      const source = $("#newSource").value.trim();
+      if (!title || !description) {
+        showToast("기회 이름과 설명을 입력해 주세요.");
+        return;
+      }
+      if (source && !safeURL(source)) {
+        showToast("출처 링크는 http:// 또는 https:// 주소를 입력해 주세요.");
+        return;
+      }
+      const type = $("#newType").value;
+      const colors = { "할인": ["🛍️", "icon-pink"], "행사": ["🎪", "icon-purple"], "공모전": ["🏆", "icon-yellow"], "봉사": ["🌱", "icon-green"], "창업": ["🚀", "icon-blue"], "일자리": ["💼", "icon-purple"] };
+      const [icon, color] = colors[type] || ["✨", "icon-blue"];
+      const item = {
+        id: "user-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7),
+        title, type, region: $("#newRegion").value, cost: $("#newCost").value,
+        deadline: $("#newDeadline").value, description, source,
+        dateAdded: new Date().toISOString().slice(0, 10), icon, color,
+        tags: ["사용자 등록"], score: 70, demo: false
+      };
+      userItems.unshift(item);
+      saveState();
+      $("#addForm").reset();
+      $("#addDialog").close();
+      resetFilters();
+      showToast("기회를 등록했어요. 이 브라우저에 저장되었습니다.");
+      window.scrollTo({ top: document.querySelector(".content-panel").getBoundingClientRect().top + window.scrollY - 85, behavior: "smooth" });
+    });
+
+
+    // 문화포털 공연·전시 API. 인증키는 입력창에서 받아 메모리에만 사용합니다.
+    function setLiveStatus(message, isError = false) {
+      const el = $("#liveStatus");
+      el.textContent = message;
+      el.classList.toggle("error", isError);
+    }
+    function xmlText(node, names) {
+      for (const name of names) {
+        const found = node.getElementsByTagName(name)[0];
+        if (found && found.textContent && found.textContent.trim()) return found.textContent.trim();
+      }
+      return "";
+    }
+    function parseCultureXML(xmlTextValue) {
+      const doc = new DOMParser().parseFromString(xmlTextValue, "text/xml");
+      if (doc.querySelector("parsererror")) throw new Error("API 응답을 XML로 읽을 수 없습니다.");
+      const resultCode = xmlText(doc, ["resultCode", "code"]);
+      const resultMsg = xmlText(doc, ["resultMsg", "message"]);
+      if (resultCode && !["00", "0000", "0", "SUCCESS"].includes(resultCode)) {
+        throw new Error(`API 응답 오류 ${resultCode}${resultMsg ? ": " + resultMsg : ""}`);
+      }
+      // API 응답의 버전별 태그 차이를 고려해 여러 후보 태그를 확인합니다.
+      let nodes = [...doc.querySelectorAll("perforList, item, items > item, list > item, result > item")];
+      if (!nodes.length) {
+        nodes = [...doc.documentElement.children].filter(n => n.children.length > 1);
+      }
+      const unique = [...new Set(nodes)];
+      return unique.map((node, index) => {
+        const title = xmlText(node, ["title", "prfnm", "performanceName", "name", "subject", "eventNm"]);
+        if (!title) return null;
+        const start = xmlText(node, ["startDate", "from", "start", "prfpdfrom", "beginDate"]);
+        const end = xmlText(node, ["endDate", "to", "end", "prfpdto", "endDate"]);
+        const place = xmlText(node, ["place", "placeName", "fcltynm", "venue", "address"]);
+        const area = xmlText(node, ["area", "areaName", "sido", "region"]);
+        const realm = xmlText(node, ["realmName", "genre", "category", "realm"]);
+        const price = xmlText(node, ["price", "ticketPrice", "entrpsnm", "fee"]);
+        const link = xmlText(node, ["url", "link", "relateUrl", "homepage", "webUrl"]);
+        const imageUrl = xmlText(node, ["thumbnail", "poster", "imgUrl", "imageUrl"]);
+        const region = mapRegion(area + " " + place);
+        const date = (start || "").replace(/[^\d]/g, "");
+        let deadline = "";
+        const endDigits = (end || "").replace(/[^\d]/g, "");
+        if (endDigits.length >= 8) deadline = `${endDigits.slice(0,4)}-${endDigits.slice(4,6)}-${endDigits.slice(6,8)}`;
+        const description = [
+          start || end ? `기간: ${start || "시작일 미확인"} ~ ${end || "종료일 미확인"}` : "",
+          place ? `장소: ${place}` : "",
+          realm ? `분야: ${realm}` : "",
+          price ? `요금 정보: ${price}` : "요금은 공식 안내에서 확인하세요."
+        ].filter(Boolean).join(" · ");
+        return {
+          id: "culture-" + (xmlText(node, ["seq", "seqNo", "id", "performanceId"]) || index + "-" + title),
+          title, type: "행사", region, cost: /무료|free/i.test(price) ? "무료" : "유료",
+          deadline, description: description || "문화포털에서 제공한 공연·전시 정보입니다.",
+          source: safeURL(link) || "https://www.culture.go.kr/", dateAdded: new Date().toISOString().slice(0,10),
+          icon: "🎭", color: "icon-purple", tags: ["문화포털", realm || "공연·전시"],
+          score: 90, live: true, demo: false, place, startDate: start, endDate: end,
+          imageUrl: safeURL(imageUrl)
+        };
+      }).filter(Boolean);
+    }
+    function mapRegion(value) {
+      const textValue = String(value || "");
+      const regions = ["서울","인천","경기","강원","대전","세종","충북","충남","광주","전북","전남","대구","경북","부산","울산","경남","제주"];
+      return regions.find(region => textValue.includes(region)) || "온라인";
+    }
+    async function loadCultureData() {
+      const rawKey = $("#cultureApiKey").value.trim();
+      if (!rawKey) {
+        setLiveStatus("인증키를 먼저 입력하세요. 공공데이터포털에서 문화포털 공연·전시 API를 신청해야 합니다.", true);
+        $("#cultureApiKey").focus();
+        return;
+      }
+      const button = $("#loadCultureBtn");
+      button.disabled = true;
+      button.textContent = "불러오는 중…";
+      setLiveStatus("문화포털 API에 연결하는 중입니다. 잠시 기다려 주세요.");
+      try {
+        const now = new Date();
+        const endDate = new Date(now);
+        endDate.setDate(endDate.getDate() + 60);
+        const ymd = date => `${date.getFullYear()}${String(date.getMonth()+1).padStart(2,"0")}${String(date.getDate()).padStart(2,"0")}`;
+        let serviceKey = rawKey;
+        try { if (/%[0-9A-Fa-f]{2}/.test(rawKey)) serviceKey = decodeURIComponent(rawKey); } catch {}
+        const url = new URL("https://apis.data.go.kr/B553457/nopenapi/rest/publicperformancedisplays/period");
+        const params = {
+          from: ymd(now), to: ymd(endDate), cPage: "1", rows: "50",
+          place: "", gpsxfrom: "", gpsyfrom: "", gpsxto: "", gpsyto: "",
+          keyword: "", sortStdr: "1", serviceKey
+        };
+        Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
+        const response = await fetch(url.toString(), { method: "GET" });
+        if (!response.ok) throw new Error(`서버 응답 오류 (${response.status})`);
+        const text = await response.text();
+        const items = parseCultureXML(text);
+        if (!items.length) {
+          throw new Error("응답에서 행사 목록을 찾지 못했습니다. 인증키 종류와 API 사용 가이드를 확인해 주세요.");
+        }
+        liveItems = items;
+        activeChip = "전체";
+        $("#typeFilter").value = "전체";
+        document.querySelectorAll(".chip").forEach(chip => chip.classList.toggle("active", chip.dataset.type === "전체"));
+        render();
+        setLiveStatus(`성공! 문화포털에서 ${items.length}개의 공연·전시 정보를 불러왔습니다. 기간: ${ymd(now)} ~ ${ymd(endDate)}. 일부 필드는 제공 API 형식에 따라 다를 수 있습니다.`);
+        showToast(`${items.length}개의 실시간 문화정보를 불러왔어요.`);
+      } catch (error) {
+        console.error(error);
+        const message = String(error && error.message || error);
+        if (message.includes("Failed to fetch") || message.includes("NetworkError") || message.includes("Load failed")) {
+          setLiveStatus("브라우저에서 API 요청이 차단되었을 수 있습니다(CORS 또는 네트워크). 인증키가 맞아도 이런 문제가 생길 수 있어요. 이 경우 로컬 서버/백엔드를 추가해야 합니다.", true);
+        } else {
+          setLiveStatus("조회 실패: " + message + " — 인증키 승인 상태와 문화포털 API 활용 신청 여부를 확인하세요.", true);
+        }
+      } finally {
+        button.disabled = false;
+        button.textContent = "공연·전시 불러오기";
+      }
+    }
+    $("#loadCultureBtn").addEventListener("click", loadCultureData);
+    $("#clearLiveBtn").addEventListener("click", () => {
+      liveItems = [];
+      $("#cultureApiKey").value = "";
+      render();
+      setLiveStatus("실시간 결과와 입력한 인증키를 지웠습니다.");
+    });
+
+    render();
+  </script>
+</body>
+</html>
