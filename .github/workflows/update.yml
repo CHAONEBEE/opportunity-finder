@@ -1,0 +1,27 @@
+
+name: Daily opportunity update
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository files
+        uses: actions/checkout@v4
+
+      - name: Prepare Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Update opportunity data
+        run: |
+          echo "Daily update workflow is running."
+          echo "Connect the official opportunity data collector here."
