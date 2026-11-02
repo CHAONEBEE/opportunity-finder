@@ -1224,14 +1224,6 @@
     "source": "K-Startup"
   },
   {
-    "title": "[2026 Beyond OI] 밋업 데이 참여 스타트업 모집&#40;~11.1&#41;",
-    "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179624",
-    "description": "",
-    "deadline": "2026-11-01",
-    "category": "창업",
-    "source": "K-Startup"
-  },
-  {
     "title": "2026 신한금융희망재단 - 함께일하는재단, 사회연대경제 먹거리 으뜸경연대회 참여기업 모집",
     "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179625",
     "description": "",
@@ -1296,6 +1288,22 @@
     "source": "K-Startup"
   },
   {
+    "title": "26년 11월 스타트업 언론 홍보 지원사업 참가사 모집 공고(1차)",
+    "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179644",
+    "description": "",
+    "deadline": null,
+    "category": "창업",
+    "source": "K-Startup"
+  },
+  {
+    "title": "「벤처·이노비즈·메인비즈 스케일업 밋업」 참여기업 모집",
+    "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179647",
+    "description": "",
+    "deadline": null,
+    "category": "창업",
+    "source": "K-Startup"
+  },
+  {
     "title": "NCI 민/관/학 창업포럼&#40;2026 강북창업포럼&#41; 참관객 모집",
     "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179649",
     "description": "",
@@ -1306,6 +1314,14 @@
   {
     "title": "[온라인·무료] 재고·코딩·PG심사 없이, 오늘 여는 내 쇼핑몰",
     "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179651",
+    "description": "",
+    "deadline": null,
+    "category": "창업",
+    "source": "K-Startup"
+  },
+  {
+    "title": "2026년도 키친인큐베이터 개별·공유주방 25기 및 제조주방 13기 모집",
+    "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179653",
     "description": "",
     "deadline": null,
     "category": "창업",
@@ -1328,6 +1344,14 @@
     "source": "K-Startup"
   },
   {
+    "title": "2026년 초기창업패키지 SM엔터테인먼트 오픈이노베이션 밋업  CultureTech Challenge",
+    "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179661",
+    "description": "",
+    "deadline": null,
+    "category": "창업",
+    "source": "K-Startup"
+  },
+  {
     "title": "2026 서울 기후테크 글로벌 B2G 매칭데이 행사 참여기업 모집",
     "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179668",
     "description": "",
@@ -1338,14 +1362,6 @@
   {
     "title": "트레일 신산업 로컬창업지원 참여기업 모집",
     "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179672",
-    "description": "",
-    "deadline": null,
-    "category": "창업",
-    "source": "K-Startup"
-  },
-  {
-    "title": "[포스텍홀딩스 데모데이] 2026 PR Day : 기술, 현실이 되다",
-    "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179604",
     "description": "",
     "deadline": null,
     "category": "창업",
@@ -1416,14 +1432,6 @@
     "source": "K-Startup"
   },
   {
-    "title": "2026  예비창업패키지 ST 창업준비 아카데미 참여자 모집",
-    "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179616",
-    "description": "",
-    "deadline": null,
-    "category": "창업",
-    "source": "K-Startup"
-  },
-  {
     "title": "한국기술교육대학교 오픈이노베이션 프로그램 참여기업 모집 통합 공고",
     "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179662",
     "description": "",
@@ -1444,6 +1452,14 @@
     "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179620",
     "description": "",
     "deadline": "2026-11-05",
+    "category": "창업",
+    "source": "K-Startup"
+  },
+  {
+    "title": "[ZUZU X 삼성화재 집중검토] 헬스케어·모빌리티·AI·홈/라이프 Seed·Pre-A 투자 검토 모집",
+    "url": "http://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&id=179658",
+    "description": "",
+    "deadline": null,
     "category": "창업",
     "source": "K-Startup"
   },
