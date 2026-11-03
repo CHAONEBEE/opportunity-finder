@@ -189,28 +189,7 @@
     </section>
 
 
-    <section class="live-panel">
-      <h2>🌐 실제 공공데이터 연결</h2>
-      <p class="sub">문화포털의 공연·전시 정보를 직접 조회할 수 있어요. 인증키가 있어야 실시간 조회가 가능합니다.</p>
-      <div class="live-controls">
-        <input id="cultureApiKey" type="password" autocomplete="off" placeholder="문화포털 API 일반 인증키(Decoding)">
-        <button class="btn btn-primary" id="loadCultureBtn">공연·전시 불러오기</button>
-        <button class="btn btn-light" id="clearLiveBtn">실시간 결과 지우기</button>
-      </div>
-      <div id="liveStatus" class="live-status" role="status" aria-live="polite">아직 실시간 데이터를 불러오지 않았습니다. 인증키는 이 페이지에서만 사용하며 저장하지 않습니다.</div>
-      <div class="api-help">
-        인증키 발급: <a href="https://www.data.go.kr/" target="_blank" rel="noopener noreferrer">공공데이터포털</a>에서 문화포털 공연·전시 API를 검색해 활용 신청하세요.
-        파일을 더블 클릭해 연 페이지에서는 브라우저의 보안 정책(CORS)으로 API 요청이 차단될 수 있습니다. 이 경우 로컬 서버/백엔드를 통해 연결해야 합니다.
-      </div>
-      <div class="source-links" aria-label="공식 정보 사이트">
-        <a href="https://www.k-startup.go.kr/" target="_blank" rel="noopener noreferrer">🚀 K-Startup 창업지원</a>
-        <a href="https://www.bizinfo.go.kr/" target="_blank" rel="noopener noreferrer">🏢 기업마당 지원사업</a>
-        <a href="https://www.culture.go.kr/" target="_blank" rel="noopener noreferrer">🎭 문화포털</a>
-        <a href="https://www.1365.go.kr/" target="_blank" rel="noopener noreferrer">🌱 1365 자원봉사</a>
-        <a href="https://www.work24.go.kr/" target="_blank" rel="noopener noreferrer">💼 고용24 일자리</a>
-      </div>
-    </section>
-
+    
     <section class="layout">
       <aside>
         <h2 class="filter-title">기회 찾기</h2>
@@ -267,16 +246,7 @@
           </div>
           <span class="tag" id="resultCount">0개</span>
         </div>
-        <div class="notice">안내: 아래 목록은 2026년 10월 27일 기준 접수 마감일이 지나지 않은 공식 공고를 선별한 것입니다. 모집 여부와 조건은 변경될 수 있으니 신청 전 원문을 확인하세요.</div>
-        <div class="chips" id="quickChips">
-          <button class="chip active" data-type="전체">전체</button>
-          <button class="chip" data-type="할인">💸 할인·혜택</button>
-          <button class="chip" data-type="행사">🎪 행사·체험</button>
-          <button class="chip" data-type="공모전">🏆 공모전·교육</button>
-          <button class="chip" data-type="봉사">🌱 봉사·나눔</button>
-          <button class="chip" data-type="창업">🚀 창업·사업</button>
-          <button class="chip" data-type="일자리">💼 일자리·활동</button>
-        </div>
+      
         <div class="cards" id="cards"></div>
       </section>
     </section>
