@@ -440,9 +440,55 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(userItems));
       localStorage.setItem(SAVED_KEY, JSON.stringify([...savedIds]));
     }
-    function allItems() {
-      return [...liveItems, ...userItems, ...sampleOpportunities];
+   let autoItems = [];
+
+function allItems(async function loadAutoItems() {
+  try {
+    const response = await fetch(
+      "./opportunities.json?updated=" + Date.now()
+    );
+
+    if (!response.ok) {
+      throw new Error("공고 데이터를 불러오지 못했습니다.");
     }
+
+    const data = await response.json();
+
+    autoItems = data.map((item, index) => ({
+      id: "auto-" + index + "-" + item.url,
+      title: item.title,
+      type: item.category || "창업",
+      region: "전국",
+      cost: "무료",
+      deadline: item.deadline || "",
+      description: item.description || "공식 공고를 확인하세요.",
+      source: item.url,
+      dateAdded: new Date().toISOString().slice(0, 10),
+      icon: "🚀",
+      color: "icon-blue",
+      tags: ["자동 업데이트", item.source || "공고"],
+      score: 80,
+      verified: true,
+      demo: false
+    }));
+
+    render();
+    console.log("자동 업데이트 공고:", autoItems.length);
+  } catch (error) {
+    console.error("공고 자동 업데이트 실패:", error);
+  }
+}) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  return [...autoItems, ...liveItems, ...userItems, ...sampleOpportunities]
+    .filter(item => {
+      if (!item.deadline) return true;
+
+      const deadline = new Date(item.deadline + "T00:00:00");
+      return !Number.isNaN(deadline.getTime()) && deadline >= today;
+    });
+}
     function escapeHTML(value = "") {
       return String(value).replace(/[&<>"']/g, char => ({
         "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -777,6 +823,7 @@
     });
 
     render();
+loadAutoItems();
   </script>
 </body>
 </html>
